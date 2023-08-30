@@ -74,16 +74,12 @@ WSGI_APPLICATION = 'MasterGame.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "GameMaster",
-        "USER": "postgres",
-        "PASSWORD": "coderslab",
-        "HOST": "localhost",
-        "PORT": "5432",
-    }
-}
+try:
+    from MasterGame.local_settings import DATABASES
+except ModuleNotFoundError:
+    print("No database configuration in the local_settings.py file!")
+    print("Complete the data and try again!")
+    exit(0)
 
 
 # Password validation
