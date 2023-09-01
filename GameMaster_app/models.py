@@ -41,9 +41,24 @@ class GameSession(models.Model):
     title = models.CharField(max_length=256)
     slots = models.PositiveIntegerField(default=1, validators=[MinValueValidator(1), MaxValueValidator(6)])
     session_date = models.DateTimeField()
+    is_public = models.BooleanField(default=True)
+    is_open = models.BooleanField(default=True)
 
     class Meta:
         ordering = ['-creation_date']
 
     def __str__(self):
         return self.title
+
+
+class PlayerCharacter(models.Model):
+    class CharacterStatus(models.TextChoices):
+        DEAD = 'Dead', 'Żyje'
+        ALIVE = 'Alive', 'Martwy'
+
+    owner = models.ForeignKey(Player, on_delete=models.CASCADE)
+    name = models.CharField(max_length=128)
+    description = models.TextField()
+    creation_date = models.DateTimeField(default=timezone.now)
+    character_status = models.CharField(max_length=5, choices=CharacterStatus.choices, default=CharacterStatus.ALIVE)
+    game_session = models.ForeignKey(GameSession, on_delete=models.CASCADE)
