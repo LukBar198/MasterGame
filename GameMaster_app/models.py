@@ -11,7 +11,7 @@ class GameMaster(models.Model):
     creation_date = models.DateTimeField(default=timezone.now)
 
     class Meta:
-        ordering = ['-creation_date']
+        ordering = ['-creation_date', 'nickname']
 
     def __str__(self):
         return self.user_nickname
@@ -24,7 +24,7 @@ class Player(models.Model):
     creation_date = models.DateTimeField(default=timezone.now)
 
     class Meta:
-        ordering = ['-creation_date']
+        ordering = ['-creation_date', 'user_id']
 
     def __str__(self):
         return self.player_nickname
@@ -47,7 +47,7 @@ class GameSession(models.Model):
     is_open = models.BooleanField(default=True)
 
     class Meta:
-        ordering = ['-creation_date']
+        ordering = ['-creation_date', 'owner_id', 'session_date']
 
     def __str__(self):
         return self.title
@@ -66,7 +66,7 @@ class PlayerCharacter(models.Model):
     game_session_id = models.ForeignKey(GameSession, on_delete=models.CASCADE)
 
     class Meta:
-        ordering = ['-creation_date']
+        ordering = ['-creation_date', 'owner_id', 'game_session_id']
 
     def __str__(self):
         return self.name
@@ -86,3 +86,9 @@ class CharacterSheet(models.Model):
     wealth = models.PositiveIntegerField(default=0)
     life_points = models.PositiveIntegerField(default=10, validators=[MaxValueValidator(100)])
     age = models.PositiveIntegerField(default=20, validators=[MinValueValidator(18), MaxValueValidator(999)])
+
+    class Meta:
+        ordering = ['-creation_date', 'character_id']
+
+    def __str__(self):
+        return self.name
