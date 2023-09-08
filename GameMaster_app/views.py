@@ -1,14 +1,15 @@
-from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate, login
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views import View
 from .forms import LoginForm, UserRegistrationForm
 
 
 class IndexView(View):
     def get(self, request):
-        login_form = AuthenticationForm()
+        login_form = LoginForm()
         return render(request, 'index.html', {'login_form': login_form})
 
     def post(self, request):
@@ -21,7 +22,8 @@ class IndexView(View):
             if user is not None:
                 if user.is_active:
                     login(request, user)
-                    return HttpResponse('Logowanie OK')
+                    messages.success(request, 'Logowanie zakończone pomyślnie')
+                    return redirect('dashboard')
                 else:
                     return HttpResponse('Konto zablokowane')
             else:
@@ -32,19 +34,23 @@ class IndexView(View):
 
 
 class RegisterView(View):
-    def get(self,request):
+    def get(self, request):
         usr_form = UserRegistrationForm()
         return render(request, 'register.html', {'usr_form': usr_form})
 
-    def post(self,request):
+    def post(self, request):
         usr_form = UserRegistrationForm(request.POST)
         if usr_form.is_valid():
             new_user = usr_form.save(commit=False)
             new_user.set_password(usr_form.cleaned_data['password'])
             new_user.save()
-            return render(request, 'start.html', {'new_user':new_user})
+            return render(request, 'start.html', {'new_user': new_user})
 
 
+# @login_required
+class DashboardView(View):
+    def get(self, request):
+        return render(request, 'dashboard.html')
 
 # class SessionList(View):
 #     def get(self, request):

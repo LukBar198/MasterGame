@@ -4,12 +4,16 @@
 
 {% block content %}
     <div class="container mt-5">
-        <h1>Utwórz konto</h1>
-    <p>Proszę wypełnić formularz:</p>
-    <form method="post">
-        {{ usr_form.as_p }}
-        {% csrf_token %}
-        <p><input type="submit" value="Utwórz konto"></p>
-    </form>
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <h1>Utwórz konto</h1>
+                <p>Proszę wypełnić formularz:</p>
+                <form method="post">
+                    {{ usr_form.as_p }}
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary">Utwórz konto</button>
+                </form>
+            </div>
+        </div>
     </div>
 {% endblock %}

@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}Witaj{% endblock %}
+
+{% block content %}
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <button type="button" class="btn btn-primary"
+                        onclick="location.href='{% url 'logout' %}'">Wyloguj się
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+
+
+{% endblock %}
+
