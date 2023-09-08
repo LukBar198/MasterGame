@@ -5,13 +5,13 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 
 
 class GameMaster(models.Model):
-    nickname = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    user_id = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     user_nickname = models.CharField(max_length=128, default='')
     is_game_master = models.BooleanField(default=False)
     creation_date = models.DateTimeField(default=timezone.now)
 
     class Meta:
-        ordering = ['-creation_date', 'nickname']
+        ordering = ['-creation_date', 'user_id']
 
     def __str__(self):
         return self.user_nickname
@@ -31,14 +31,7 @@ class Player(models.Model):
 
 
 class GameSession(models.Model):
-    class GameSystem(models.TextChoices):
-        RPG1 = 'Rpg1', 'Fajny system'
-        RPG2 = 'Rpg2', 'Dobry system'
-        RPG3 = 'Rpg3', 'Taki sobie system'
-        NONAME = 'NN', 'Inny system'
-
     owner_id = models.ForeignKey(GameMaster, on_delete=models.CASCADE)
-    system = models.CharField(max_length=4, choices=GameSystem.choices, default=GameSystem.NONAME)
     creation_date = models.DateTimeField(default=timezone.now)
     title = models.CharField(max_length=256)
     slots = models.PositiveIntegerField(default=1, validators=[MinValueValidator(1), MaxValueValidator(6)])
@@ -53,6 +46,24 @@ class GameSession(models.Model):
         return self.title
 
 
+class GameSystem(models.Model):
+    class GameSystem(models.TextChoices):
+        RPG1 = 'Rpg1', 'Fajny system'
+        RPG2 = 'Rpg2', 'Dobry system'
+        RPG3 = 'Rpg3', 'Taki sobie system'
+        NONAME = 'NN', 'Inny system'
+
+    session_id = models.ForeignKey(GameSession, on_delete=models.CASCADE)
+    system = models.CharField(max_length=4, choices=GameSystem.choices, default=GameSystem.NONAME)
+    creation_date = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        ordering = ['-creation_date', 'session_id']
+
+    def __str__(self):
+        return self.system
+
+
 class PlayerCharacter(models.Model):
     class CharacterStatus(models.TextChoices):
         DEAD = 'Dead', 'Martwy'
@@ -63,10 +74,10 @@ class PlayerCharacter(models.Model):
     description = models.TextField()
     creation_date = models.DateTimeField(default=timezone.now)
     character_status = models.CharField(max_length=5, choices=CharacterStatus.choices, default=CharacterStatus.ALIVE)
-    game_session_id = models.ForeignKey(GameSession, on_delete=models.CASCADE)
+    game_session_id = models.ManyToManyField('GameSession')
 
     class Meta:
-        ordering = ['-creation_date', 'owner_id', 'game_session_id']
+        ordering = ['-creation_date', 'owner_id']
 
     def __str__(self):
         return self.name
@@ -74,8 +85,6 @@ class PlayerCharacter(models.Model):
 
 class CharacterSheet(models.Model):
     character_id = models.OneToOneField(PlayerCharacter, on_delete=models.CASCADE, primary_key=True)
-    name = models.CharField(max_length=128)
-    creation_date = models.DateTimeField(default=timezone.now)
     strength = models.PositiveIntegerField(default=8, validators=[MinValueValidator(1), MaxValueValidator(30)])
     condition = models.PositiveIntegerField(default=8, validators=[MinValueValidator(1), MaxValueValidator(30)])
     dexterity = models.PositiveIntegerField(default=8, validators=[MinValueValidator(1), MaxValueValidator(30)])
@@ -88,7 +97,7 @@ class CharacterSheet(models.Model):
     age = models.PositiveIntegerField(default=20, validators=[MinValueValidator(18), MaxValueValidator(999)])
 
     class Meta:
-        ordering = ['-creation_date', 'character_id']
+        ordering = ['-character_id']
 
     def __str__(self):
-        return self.name
+        return self.character_id
