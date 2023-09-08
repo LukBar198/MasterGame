@@ -47,6 +47,8 @@ class RegisterView(View):
             return render(request, 'start.html', {'new_user': new_user})
 
 
+
+
 # @login_required
 class DashboardView(View):
     def get(self, request):
