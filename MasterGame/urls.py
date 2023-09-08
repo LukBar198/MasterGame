@@ -16,9 +16,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from GameMaster_app.views import IndexView
+from GameMaster_app.views import IndexView, RegisterView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', IndexView.as_view(), name="index"),
+    path('register/', RegisterView.as_view(), name="register")
 ]

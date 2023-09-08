@@ -3,8 +3,7 @@ from django.contrib.auth import authenticate, login
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.views import View
-from django.contrib import messages
-from .forms import LoginForm
+from .forms import LoginForm, UserRegistrationForm
 
 
 class IndexView(View):
@@ -26,10 +25,26 @@ class IndexView(View):
                 else:
                     return HttpResponse('Konto zablokowane')
             else:
-                messages.error(request, 'Nieprawidłowy login lub hasło.')
+                return HttpResponse('Nieprawidlowy login lub hasło')
         else:
             login_form = LoginForm()
         return render(request, 'index.html', {'login_form': login_form})
+
+
+class RegisterView(View):
+    def get(self,request):
+        usr_form = UserRegistrationForm()
+        return render(request, 'register.html', {'usr_form': usr_form})
+
+    def post(self,request):
+        usr_form = UserRegistrationForm(request.POST)
+        if usr_form.is_valid():
+            new_user = usr_form.save(commit=False)
+            new_user.set_password(usr_form.cleaned_data['password'])
+            new_user.save()
+            return render(request, 'start.html', {'new_user':new_user})
+
+
 
 # class SessionList(View):
 #     def get(self, request):
