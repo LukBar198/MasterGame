@@ -1,6 +1,6 @@
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.views import View
@@ -47,10 +47,7 @@ class RegisterView(View):
             return render(request, 'start.html', {'new_user': new_user})
 
 
-
-
-# @login_required
-class DashboardView(View):
+class DashboardView(LoginRequiredMixin, View):
     def get(self, request):
         return render(request, 'dashboard.html')
 
