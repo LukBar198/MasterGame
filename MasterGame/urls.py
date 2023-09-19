@@ -17,12 +17,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.contrib.auth import views as auth_views
-from GameMaster_app.views import IndexView, RegisterView, DashboardView
+from GameMaster_app.views import IndexView, RegisterView, DashboardView, AddSessionView, UserSettingsView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', IndexView.as_view(), name="index"),
     path('register/', RegisterView.as_view(), name="register"),
     path('dashboard/', DashboardView.as_view(), name="dashboard"),
-    path('logout/', auth_views.LogoutView.as_view(), name="logout")
+    path('logout/', auth_views.LogoutView.as_view(), name="logout"),
+    path('add_session/', AddSessionView.as_view(), name="add_session"),
+    path('settings/', UserSettingsView.as_view(), name="settings")
 ]

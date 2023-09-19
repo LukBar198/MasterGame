@@ -6,6 +6,13 @@
             <div class="col-md-6 offset-md-3">
                 <h1>Game master app</h1>
                 <P>Zarejestruj się, albo zaloguj:</P>
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-danger">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
                 <form method="post">
                     {% csrf_token %}
                     {{ login_form.as_p }}

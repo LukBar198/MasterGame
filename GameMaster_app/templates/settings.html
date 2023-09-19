@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}Ustawienia{% endblock %}
+
+<div class="dashboard-content border-dashed p-3 m-4 view-height">
+    {% block content %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-danger">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <h1>Ustawienia użytkownika:</h1>
+
+        <form method="POST" action="">
+            {% csrf_token %}
+            <label for="user_nickname">Nick użytkownika:</label>
+            <input type="text" id="user_nickname" name="user_nickname" required><br>
+
+            <label for="is_game_master">Czy jesteś mistrzem gry?</label>
+            <input type="checkbox" id="is_game_master" name="is_game_master"><br>
+
+            <input type="submit" value="Wyślij">
+        </form>
+        </div>
+    {% endblock %}

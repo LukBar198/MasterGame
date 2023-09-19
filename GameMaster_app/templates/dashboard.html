@@ -1,7 +1,13 @@
 {% extends 'base.html' %}
 
 {% block title %}Witaj{% endblock %}
-
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-danger">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
 {% block content %}
     {% if messages %}
         <div class="messages">
@@ -10,7 +16,16 @@
             {% endfor %}
         </div>
     {% endif %}
-
+        <div class="menu-item border-dashed">
+        <a href="{% url 'settings' %}">
+            <span class="title">Ustawienia</span>
+        </a>
+    </div>
+    <div class="menu-item border-dashed">
+        <a href="{% url 'add_session' %}">
+            <span class="title">Dodaj sesję</span>
+        </a>
+    </div>
     <div class="container mt-5">
         <div class="row">
             <div class="col-md-6 offset-md-3">
