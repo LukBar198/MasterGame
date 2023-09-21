@@ -47,6 +47,8 @@ class RegisterView(View):
             new_user.set_password(usr_form.cleaned_data['password'])
             new_user.save()
             return render(request, 'start.html', {'new_user': new_user})
+        messages.error(request, f"Hasła nie są takie same!")
+        return redirect('register')
 
 
 class DashboardView(LoginRequiredMixin, View):
@@ -63,7 +65,7 @@ class UserSettingsView(LoginRequiredMixin, View):
         user = User.objects.get(id=user_id)
         user_nickname = request.POST.get('user_nickname')
         is_game_master = request.POST.get('is_game_master')
-        if user_nickname:
+        if user_nickname and is_game_master:
             GameMaster.objects.create(
                 user_id=user,
                 user_nickname=user_nickname,
@@ -99,9 +101,3 @@ class AddSessionView(LoginRequiredMixin, View):
         messages.error(request, f"Wypełnij poprawnie wszystkie pola")
         return redirect('add_session')
 
-# class SessionList(View):
-#     def get(self, request):
-#         ctx = {
-#             'SESSIONS': GameSession
-#         }
-#         return render(request, 'index.html', ctx)
