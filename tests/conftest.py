@@ -24,12 +24,6 @@ def gamemaster():
 
 
 @pytest.fixture
-def authenticated_client(client, user):
-    client.login(username='testuser', password='testpassword')
-    return client
-
-
-@pytest.fixture
 def dashboard_url():
     return reverse('dashboard')
 
