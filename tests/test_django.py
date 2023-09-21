@@ -131,8 +131,9 @@ def test_add_session_valid(client, gamemaster, add_session_url):
         is_public=True
     ).exists()
 
+
 @pytest.mark.django_db
-def test_add_session_view_post_invalid(client, gamemaster, add_session_url):
+def test_add_session_invalid(client, gamemaster, add_session_url):
     client.login(username='testuser', password='testpassword')
     data = {
         'title': '',
