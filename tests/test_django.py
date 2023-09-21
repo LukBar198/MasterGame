@@ -80,9 +80,13 @@ def test_password_mismatch(client, register_url):
         'password': 'testpassword',
         'password2': 'wrongpassword',
     }
-    response = client.post(register_url, data)
-    assert response.status_code == 302
-    assert response.url == reverse('register')
+    response = client.post(register_url, data, follow=True)
+    messages = list(get_messages(response.wsgi_request))
+    message = messages[0]
+    assert response.status_code == 200
+    assert messages
+    assert "Hasła nie są takie same!" in message.message
+    assert response.request['PATH_INFO'] == reverse('register')
 
 
 @pytest.mark.django_db
@@ -105,9 +109,13 @@ def test_user_settings_invalid(client, user, settings_url):
         'user_nickname': '',
         'is_game_master': True,
     }
-    response = client.post(settings_url, data)
-    assert response.status_code == 302
-    assert response.url == reverse('settings')
+    response = client.post(settings_url, data, follow=True)
+    messages = list(get_messages(response.wsgi_request))
+    message = messages[0]
+    assert response.status_code == 200
+    assert messages
+    assert "Wypełnij poprawnie wszystkie pola" in message.message
+    assert response.request['PATH_INFO'] == reverse('settings')
 
 
 @pytest.mark.django_db
@@ -142,6 +150,13 @@ def test_add_session_invalid(client, gamemaster, add_session_url):
         'is_open': True,
         'is_public': True,
     }
-    response = client.post(add_session_url, data)
-    assert response.status_code == 302
-    assert response.url == reverse('add_session')
+    response = client.post(add_session_url, data, follow=True)
+    messages = list(get_messages(response.wsgi_request))
+    message = messages[0]
+    assert response.status_code == 200
+    assert messages
+    assert "Wypełnij poprawnie wszystkie pola" in message.message
+    assert response.request['PATH_INFO'] == reverse('add_session')
+
+
+
