@@ -35,10 +35,11 @@ This section provides an overview of the technologies and tools used in the deve
 
 - **Framework**: Django 4.2.4
 - **Front-End**: HTML/CSS, JavaScript, Bootstrap
-- **Database**: PostgreSQL
+- **Database**: PostgreSQL 14.9
 - **Version Control**: Git
-- **Development Environment**: Python, Virtual Environment
+- **Development Environment**: Python 3.11, Virtual Environment
 - **Testing**: pytest 7.4.0 and pytest-django 4.5.2
+- **IDE**: Pycharm 2023.2.1
 - **Deployment**: TO BE DONE
 - **Additional Libraries**: Various Python libraries and Django packages
 
@@ -67,8 +68,10 @@ MasterGame
 │   ├── conftest.py
 │   ├── pytest.ini
 │   └── test_django.py
+├── .gitignore
+├── README.md
 ├── manage.py
-└── README.md
+└── requirements.txt
 ```
 
 ## Views
