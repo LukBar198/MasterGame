@@ -102,6 +102,9 @@ class UserSettingsView(LoginRequiredMixin, View):
        - get(request): Handles HTTP GET requests for displaying the user settings form.
        - post(request): Handles HTTP POST requests for processing the submitted form data
          and updating user settings if the data is valid.
+
+       Notes:
+       - is_game_master=True: Temporary solution, will be changed in the next phase of development.
        """
 
     def get(self, request):
@@ -134,6 +137,10 @@ class AddSessionView(LoginRequiredMixin, View):
       - get(request): Handles HTTP GET requests for displaying the game session creation form.
       - post(request): Handles HTTP POST requests for processing the submitted form data and
         creating a new game session if the data is valid.
+
+       Notes:
+       - is_open=True: Temporary solution, will be changed in the next phase of development.
+       - is_public=True: Temporary solution, will be changed in the next phase of development.
       """
 
     def get(self, request):
