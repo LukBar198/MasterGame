@@ -10,6 +10,18 @@ from .models import GameSession, GameMaster
 
 
 class IndexView(View):
+    """
+       IndexView is a Django View class for user login.
+
+       This view provides user login functionality. It handles both GET and POST requests.
+       Users can access the login form using a GET request and submit the form using a POST request.
+
+       Methods:
+       - get(request): Handles HTTP GET requests for displaying the login form.
+       - post(request): Handles HTTP POST requests for processing the submitted form data and
+         authenticating the user if the data is valid.
+       """
+
     def get(self, request):
         login_form = LoginForm()
         return render(request, 'index.html', {'login_form': login_form})
@@ -36,6 +48,18 @@ class IndexView(View):
 
 
 class RegisterView(View):
+    """
+    RegisterView is a Django View class for user registration.
+
+    This view provides user registration functionality. It handles both GET and POST requests.
+    Users can access the registration form using a GET request and submit the form using a POST request.
+
+    Methods:
+    - get(request): Handles HTTP GET requests for displaying the user registration form.
+    - post(request): Handles HTTP POST requests for processing the submitted form data and
+      creating a new user account if the data is valid.
+    """
+
     def get(self, request):
         usr_form = UserRegistrationForm()
         return render(request, 'register.html', {'usr_form': usr_form})
@@ -52,11 +76,34 @@ class RegisterView(View):
 
 
 class DashboardView(LoginRequiredMixin, View):
+    """
+    DashboardView is a Django View class for displaying a user's dashboard.
+
+    This view requires authentication, and only logged-in users can access it.
+    Provides an overview of the user's account, activities,
+    or relevant information.
+
+    Methods:
+    - get(request): Handles HTTP GET requests for rendering and displaying the user's dashboard.
+    """
+
     def get(self, request):
         return render(request, 'dashboard.html')
 
 
 class UserSettingsView(LoginRequiredMixin, View):
+    """
+       UserSettingsView is a Django View class for updating user settings.
+
+       This view requires authentication, and only logged-in users can access it.
+       Users can update their settings, including their user nickname and game master status.
+
+       Methods:
+       - get(request): Handles HTTP GET requests for displaying the user settings form.
+       - post(request): Handles HTTP POST requests for processing the submitted form data
+         and updating user settings if the data is valid.
+       """
+
     def get(self, request):
         return render(request, 'settings.html')
 
@@ -77,6 +124,18 @@ class UserSettingsView(LoginRequiredMixin, View):
 
 
 class AddSessionView(LoginRequiredMixin, View):
+    """
+      AddSessionView is a Django View class for adding a game session.
+
+      This view requires an authentication, and only logged-in users can access it.
+      Users can create a new game session by providing session details in a form.
+
+      Methods:
+      - get(request): Handles HTTP GET requests for displaying the game session creation form.
+      - post(request): Handles HTTP POST requests for processing the submitted form data and
+        creating a new game session if the data is valid.
+      """
+
     def get(self, request):
         return render(request, 'add_session.html')
 
@@ -100,4 +159,3 @@ class AddSessionView(LoginRequiredMixin, View):
             return redirect('dashboard')
         messages.error(request, f"Wypełnij poprawnie wszystkie pola")
         return redirect('add_session')
-
